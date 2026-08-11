@@ -1,0 +1,7 @@
+.env
+laravel/vendor/
+laravel/node_modules/
+laravel/storage/logs/*.log
+laravel/.env
+kafka_data/
+postgres_data/
