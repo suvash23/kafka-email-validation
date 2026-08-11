@@ -72,6 +72,20 @@
 
 ---
 
-## Phase 6 — Understand partitions and offsets (Coming Up!)
+## Phase 6 — Understand partitions and offsets
 
-*(Content will be added upon completion of Phase 6)*
+### Kafka Concepts You Will Learn
+- **Partition Key**: A string (like an email address) attached to a message. Kafka hashes this key to determine the partition. The rule is: *the same key always hashes to the same partition*. This guarantees ordering for messages sharing that key.
+- **Offset**: A permanent, monotonically increasing integer (0, 1, 2...) assigned to a message when it enters a partition. Offsets are independent per partition.
+- **Consumer Lag**: `latest_offset - committed_offset`. It indicates how far behind the consumer is. Lag `0` means the consumer is fully caught up.
+
+### What can go wrong
+- **Assuming Global Ordering**: Kafka ONLY guarantees ordering *within a single partition*. Messages across different partitions will arrive interleaved.
+- **Changing Partition Counts Later**: If you add more partitions to a topic later, the hashing math changes, which causes the same key to potentially land on a different partition, breaking ordering guarantees.
+- **Offset Reset Pitfall**: You cannot force an offset reset on a consumer group via CLI unless all consumers in that group are gracefully stopped first.
+
+---
+
+## Phase 7 — Integrate Laravel API with Kafka producer (Coming Up!)
+
+*(Content will be added upon completion of Phase 7)*

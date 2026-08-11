@@ -27,8 +27,8 @@ Every phase follows this format:
 - [x] **Phase 3** — Create and inspect Kafka topics manually
 - [x] **Phase 4** — Build a simple Kafka producer (standalone PHP)
 - [x] **Phase 5** — Build a simple Kafka consumer (standalone PHP)
-- [ ] **Phase 6** — Understand partitions and offsets ← **YOU ARE HERE**
-- [ ] **Phase 7** — Integrate Laravel API with Kafka producer
+- [x] **Phase 6** — Understand partitions and offsets
+- [ ] **Phase 7** — Integrate Laravel API with Kafka producer ← **YOU ARE HERE**
 - [ ] **Phase 8** — Build the email-validation consumer command
 - [ ] **Phase 9** — Persist results in PostgreSQL
 - [ ] **Phase 10** — Manual offset commits
