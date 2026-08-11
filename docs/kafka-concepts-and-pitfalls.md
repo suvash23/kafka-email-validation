@@ -86,6 +86,19 @@
 
 ---
 
-## Phase 7 — Integrate Laravel API with Kafka producer (Coming Up!)
+## Phase 7 — Integrate Laravel API with Kafka producer
 
-*(Content will be added upon completion of Phase 7)*
+### Kafka Concepts You Will Learn
+- **Producer in a web context**: Unlike standalone daemon scripts, an API request must respond quickly. The producer call must have a rigid timeout limit so the API doesn't hang if Kafka isn't reachable.
+- **Event Schema**: A standard JSON envelope (`event_id`, `event_type`, `email`, `requested_at`). Because Kafka is just a dumb pipe of bytes, consistently structured events are critical for your consumers.
+- **HTTP 202 (Accepted) Pattern**: The API publishes to Kafka and immediately responds. It doesn't wait for business logic (like email validation) to complete, allowing massive throughput.
+
+### What can go wrong
+- **Producer Hanging**: Without a set `timeout_ms` on the `flush()`, the PHP process could block until standard PHP max execution limits kill it, tying up your web server workers.
+- **Lack of Idempotency Key**: Failing to generate a unique `event_id` upfront makes it impossible for consumers to safely deduplicate messages later.
+
+---
+
+## Phase 8 — Build the email-validation consumer command (Coming Up!)
+
+*(Content will be added upon completion of Phase 8)*
