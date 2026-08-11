@@ -99,6 +99,19 @@
 
 ---
 
-## Phase 8 — Build the email-validation consumer command (Coming Up!)
+## Phase 8 — Build the email-validation consumer command
 
-*(Content will be added upon completion of Phase 8)*
+### Kafka Concepts You Will Learn
+- **Graceful Shutdown (Signal Handling)**: When stopping a consumer container, Docker sends a SIGTERM. The consumer must catch this, finish processing the current message, and close safely. If abruptly killed, the current offset may not be committed leading to duplicate processing on reboot.
+- **Daemon Process**: Consumers are long-running daemons. They must not be run via cron schedulers. They stay connected to brokers waiting for messages.
+- **Separation of Concerns (API vs Consumer)**: Notice how fast the API was (just queued the message) while this worker handles the business logic loop. This scales beautifully.
+
+### What can go wrong
+- **Missing pcntl_signal**: In PHP, if you don't use `pcntl` to intercept signals, Docker's SIGTERM instantly kills the process, stranding uncommitted work.
+- **Memory Leaks**: A long-running PHP daemon is prone to memory leaks. Make sure you don't accumulate large arrays in memory inside the `while(true)` loop.
+
+---
+
+## Phase 9 — Persist results in PostgreSQL (Coming Up!)
+
+*(Content will be added upon completion of Phase 9)*

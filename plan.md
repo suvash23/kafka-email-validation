@@ -29,8 +29,8 @@ Every phase follows this format:
 - [x] **Phase 5** — Build a simple Kafka consumer (standalone PHP)
 - [x] **Phase 6** — Understand partitions and offsets
 - [x] **Phase 7** — Integrate Laravel API with Kafka producer
-- [ ] **Phase 8** — Build the email-validation consumer command ← **YOU ARE HERE**
-- [ ] **Phase 9** — Persist results in PostgreSQL
+- [x] **Phase 8** — Build the email-validation consumer command
+- [ ] **Phase 9** — Persist results in PostgreSQL ← **YOU ARE HERE**
 - [ ] **Phase 10** — Manual offset commits
 - [ ] **Phase 11** — Idempotency
 - [ ] **Phase 12** — Retry handling

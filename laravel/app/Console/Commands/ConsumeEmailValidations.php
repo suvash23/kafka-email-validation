@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\EmailValidation;
 use Illuminate\Console\Command;
 use RdKafka\Conf;
 use RdKafka\KafkaConsumer;
@@ -94,7 +95,16 @@ final class ConsumeEmailValidations extends Command
         // In reality, this would perform a heavy DNS/MX records check or external API call.
         $isValid = filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 
-        $this->info("[Worker {$workerId}] Result: " . ($isValid ? 'VALID' : 'INVALID'));
+        EmailValidation::create([
+            'id' => $eventId,
+            'email' => $email,
+            'is_valid' => $isValid,
+            'raw_event_payload' => $payload,
+            'partition' => $message->partition,
+            'offset' => $message->offset,
+        ]);
+
+        $this->info("[Worker {$workerId}] Saved to DB: " . ($isValid ? 'VALID' : 'INVALID'));
         $this->info(str_repeat('-', 20));
     }
 
