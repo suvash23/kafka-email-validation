@@ -8,15 +8,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('email_validations', function (Blueprint $table) {
-            $table->uuid('id')->primary(); // Will store the event_id
-            $table->string('email')->index();
-            $table->boolean('is_valid');
-            $table->jsonb('raw_event_payload');
-
-            // Helpful for debugging Kafka offset mapping
-            $table->integer('partition');
-            $table->bigInteger('offset');
-
+            $table->uuid('id')->primary();
+            $table->string('event_id')->unique();     // idempotency key (Phase 11)
+            $table->string('email');
+            $table->enum('status', ['queued', 'valid', 'invalid', 'failed', 'dead_lettered']);
+            $table->text('error_message')->nullable();
+            $table->integer('attempt')->default(1);
+            $table->timestamp('validated_at')->nullable();
             $table->timestamps();
         });
     }

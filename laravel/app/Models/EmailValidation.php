@@ -2,28 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class EmailValidation extends Model
 {
-    /**
-     * Disable default integer ID in favor of our UUID primary key.
-     */
-    public $incrementing = false;
-    protected $primaryKey = 'id';
-    protected $keyType = 'string';
+    use HasUuids;
 
     protected $fillable = [
-        'id',
+        'event_id',
         'email',
-        'is_valid',
-        'raw_event_payload',
-        'partition',
-        'offset',
+        'status',
+        'error_message',
+        'attempt',
+        'validated_at',
     ];
 
     protected $casts = [
-        'is_valid' => 'boolean',
-        'raw_event_payload' => 'array',
+        'validated_at' => 'datetime',
+        'attempt' => 'integer',
     ];
 }

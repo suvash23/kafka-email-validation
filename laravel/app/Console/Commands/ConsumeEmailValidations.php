@@ -54,7 +54,7 @@ final class ConsumeEmailValidations extends Command
 
             switch ($message->err) {
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                    $this->processMessage($message, (string) $workerId);
+                    $this->processMessage($message, (string) $workerId, $consumer);
                     break;
 
                 case RD_KAFKA_RESP_ERR__TIMED_OUT:
@@ -76,7 +76,7 @@ final class ConsumeEmailValidations extends Command
         return Command::SUCCESS;
     }
 
-    private function processMessage(\RdKafka\Message $message, string $workerId): void
+    private function processMessage(\RdKafka\Message $message, string $workerId, KafkaConsumer $consumer): void
     {
         $payload = json_decode($message->payload, true);
         $eventId = $payload['event_id'] ?? 'unknown';
@@ -95,16 +95,21 @@ final class ConsumeEmailValidations extends Command
         // In reality, this would perform a heavy DNS/MX records check or external API call.
         $isValid = filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 
-        EmailValidation::create([
-            'id' => $eventId,
-            'email' => $email,
-            'is_valid' => $isValid,
-            'raw_event_payload' => $payload,
-            'partition' => $message->partition,
-            'offset' => $message->offset,
-        ]);
+        try {
+            EmailValidation::create([
+                'event_id' => $eventId,
+                'email' => $email,
+                'status' => $isValid ? 'valid' : 'invalid',
+                'validated_at' => now(),
+            ]);
 
-        $this->info("[Worker {$workerId}] Saved to DB: " . ($isValid ? 'VALID' : 'INVALID'));
+            $consumer->commit($message); // CONCEPT: commit after successful processing
+            $this->info("[Worker {$workerId}] Saved to DB: " . ($isValid ? 'VALID' : 'INVALID'));
+        } catch (\Exception $e) {
+            // Do NOT commit — message will be re-delivered
+            $this->error("Processing failed, offset NOT committed: " . $e->getMessage());
+        }
+
         $this->info(str_repeat('-', 20));
     }
 
@@ -117,8 +122,8 @@ final class ConsumeEmailValidations extends Command
         // Start from earliest un-committed message to replay what we've already done!
         $conf->set('auto.offset.reset', 'earliest');
 
-        // Let's leave auto-commit ON for now. We will learn to disable this in Phase 10 natively.
-        $conf->set('enable.auto.commit', 'true');
+        // Disable auto-commit for Phase 10.
+        $conf->set('enable.auto.commit', 'false');
 
         return new KafkaConsumer($conf);
     }
