@@ -82,6 +82,12 @@ final class ConsumeEmailValidations extends Command
         $eventId = $payload['event_id'] ?? 'unknown';
         $email = $payload['email'] ?? '';
 
+        if (EmailValidation::where('event_id', $eventId)->exists()) {
+            $this->info("[SKIP] event_id={$eventId} already processed (duplicate delivery)");
+            $consumer->commit($message); // commit so we don't keep seeing it
+            return;
+        }
+
         $this->info(sprintf(
             "[%s] partition=%d | offset=%d | event_id=%s | email=%s",
             $workerId,

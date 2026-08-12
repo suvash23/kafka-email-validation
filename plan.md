@@ -32,8 +32,8 @@ Every phase follows this format:
 - [x] **Phase 8** — Build the email-validation consumer command
 - [x] **Phase 9** — Persist results in PostgreSQL
 - [x] **Phase 10** — Manual offset commits
-- [ ] **Phase 11** — Idempotency ← **YOU ARE HERE**
-- [ ] **Phase 12** — Retry handling
+- [x] **Phase 11** — Idempotency
+- [ ] **Phase 12** — Retry handling ← **YOU ARE HERE**
 - [ ] **Phase 13** — Dead Letter Queue
 - [ ] **Phase 14** — Multiple consumers & consumer groups
 - [ ] **Phase 15** — Consumer failure & rebalancing
