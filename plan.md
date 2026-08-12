@@ -33,8 +33,8 @@ Every phase follows this format:
 - [x] **Phase 9** — Persist results in PostgreSQL
 - [x] **Phase 10** — Manual offset commits
 - [x] **Phase 11** — Idempotency
-- [ ] **Phase 12** — Retry handling ← **YOU ARE HERE**
-- [ ] **Phase 13** — Dead Letter Queue
+- [x] **Phase 12** — Retry handling
+- [ ] **Phase 13** — Dead Letter Queue ← **YOU ARE HERE**
 - [ ] **Phase 14** — Multiple consumers & consumer groups
 - [ ] **Phase 15** — Consumer failure & rebalancing
 - [ ] **Phase 16** — Structured logging & metrics

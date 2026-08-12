@@ -97,26 +97,56 @@ final class ConsumeEmailValidations extends Command
             $email,
         ));
 
-        // Simplified Validation: Basic syntax check
-        // In reality, this would perform a heavy DNS/MX records check or external API call.
-        $isValid = filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
-
-        try {
-            EmailValidation::create([
-                'event_id' => $eventId,
-                'email' => $email,
-                'status' => $isValid ? 'valid' : 'invalid',
-                'validated_at' => now(),
-            ]);
-
-            $consumer->commit($message); // CONCEPT: commit after successful processing
-            $this->info("[Worker {$workerId}] Saved to DB: " . ($isValid ? 'VALID' : 'INVALID'));
-        } catch (\Exception $e) {
-            // Do NOT commit — message will be re-delivered
-            $this->error("Processing failed, offset NOT committed: " . $e->getMessage());
+        $maxAttempts = 3;
+        for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+            try {
+                $this->validateAndSave($payload, $workerId);
+                $consumer->commit($message);
+                return; // success
+            } catch (\App\Exceptions\TransientException $e) {
+                if ($attempt === $maxAttempts) {
+                    $this->publishToDlq($message, $e); // Phase 13
+                    $consumer->commit($message);
+                    return;
+                }
+                $this->warn("[Worker {$workerId}] Transient error: " . $e->getMessage() . " - retrying (attempt {$attempt})");
+                sleep(2 ** $attempt); // exponential backoff: 2s, 4s, 8s
+            } catch (\App\Exceptions\PermanentException $e) {
+                $this->error("[Worker {$workerId}] Permanent error: " . $e->getMessage());
+                $this->publishToDlq($message, $e);
+                $consumer->commit($message);
+                return;
+            } catch (\Exception $e) {
+                $this->error("[Worker {$workerId}] Unexpected error: " . $e->getMessage());
+                // For fully unexpected errors, don't commit (re-deliver on restart)
+                return;
+            }
         }
 
         $this->info(str_repeat('-', 20));
+    }
+
+    private function validateAndSave(array $payload, string $workerId): void
+    {
+        $eventId = $payload['event_id'] ?? 'unknown';
+        $email = $payload['email'] ?? '';
+
+        $isValid = filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+
+        EmailValidation::create([
+            'event_id' => $eventId,
+            'email' => $email,
+            'status' => $isValid ? 'valid' : 'invalid',
+            'validated_at' => now(),
+        ]);
+
+        $this->info("[Worker {$workerId}] Saved to DB: " . ($isValid ? 'VALID' : 'INVALID'));
+    }
+
+    private function publishToDlq(\RdKafka\Message $message, \Exception $e): void
+    {
+        // To be implemented in Phase 13
+        $this->error("Sent to DLQ: " . $e->getMessage());
     }
 
     private function buildConsumer(): KafkaConsumer
