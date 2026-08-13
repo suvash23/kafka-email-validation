@@ -25,6 +25,11 @@ final class ConsumeEmailValidations extends Command
      */
     private bool $running = true;
 
+    public function __construct(private \App\Services\KafkaDlqPublisherService $dlqPublisher)
+    {
+        parent::__construct();
+    }
+
     public function handle(): int
     {
         $workerId = $this->option('worker-id');
@@ -143,9 +148,9 @@ final class ConsumeEmailValidations extends Command
         $this->info("[Worker {$workerId}] Saved to DB: " . ($isValid ? 'VALID' : 'INVALID'));
     }
 
-    private function publishToDlq(\RdKafka\Message $message, \Exception $e): void
+    private function publishToDlq(\RdKafka\Message $message, \Exception $e, int $attempts = 1): void
     {
-        // To be implemented in Phase 13
+        $this->dlqPublisher->publish($message, $e, $attempts);
         $this->error("Sent to DLQ: " . $e->getMessage());
     }
 

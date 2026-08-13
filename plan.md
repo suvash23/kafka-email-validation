@@ -34,8 +34,8 @@ Every phase follows this format:
 - [x] **Phase 10** — Manual offset commits
 - [x] **Phase 11** — Idempotency
 - [x] **Phase 12** — Retry handling
-- [ ] **Phase 13** — Dead Letter Queue ← **YOU ARE HERE**
-- [ ] **Phase 14** — Multiple consumers & consumer groups
+- [x] **Phase 13** — Dead Letter Queue
+- [ ] **Phase 14** — Multiple consumers & consumer groups ← **YOU ARE HERE**
 - [ ] **Phase 15** — Consumer failure & rebalancing
 - [ ] **Phase 16** — Structured logging & metrics
 - [ ] **Phase 17** — Performance testing
