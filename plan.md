@@ -35,10 +35,10 @@ Every phase follows this format:
 - [x] **Phase 11** — Idempotency
 - [x] **Phase 12** — Retry handling
 - [x] **Phase 13** — Dead Letter Queue
-- [ ] **Phase 14** — Multiple consumers & consumer groups ← **YOU ARE HERE**
-- [ ] **Phase 15** — Consumer failure & rebalancing
-- [ ] **Phase 16** — Structured logging & metrics
-- [ ] **Phase 17** — Performance testing
+- [x] **Phase 14** — Multiple consumers & consumer groups
+- [x] **Phase 15** — Consumer failure & rebalancing
+- [x] **Phase 16** — Structured logging & metrics
+- [ ] **Phase 17** — Performance testing ← **YOU ARE HERE**
 - [ ] **Phase 18** — Final cleanup & documentation
 
 ---
