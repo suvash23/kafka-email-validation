@@ -38,8 +38,8 @@ Every phase follows this format:
 - [x] **Phase 14** — Multiple consumers & consumer groups
 - [x] **Phase 15** — Consumer failure & rebalancing
 - [x] **Phase 16** — Structured logging & metrics
-- [ ] **Phase 17** — Performance testing ← **YOU ARE HERE**
-- [ ] **Phase 18** — Final cleanup & documentation
+- [x] **Phase 17** — Performance testing
+- [ ] **Phase 18** — Final cleanup & documentation ← **YOU ARE HERE**
 
 ---
 
