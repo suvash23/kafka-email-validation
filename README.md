@@ -58,23 +58,23 @@ chmod +x kafka-scripts/kafka-inspect.sh
 ## Implementation Phases
 
 - [x] **Phase 1** – Project architecture & Docker environment
-- [ ] **Phase 2** – Start Kafka & PostgreSQL, verify connectivity
-- [ ] **Phase 3** – Create and inspect Kafka topics manually
-- [ ] **Phase 4** – Build a simple Kafka producer
-- [ ] **Phase 5** – Build a simple Kafka consumer
-- [ ] **Phase 6** – Understand partitions and offsets
-- [ ] **Phase 7** – Integrate Laravel API with Kafka producer
-- [ ] **Phase 8** – Build the email-validation consumer
-- [ ] **Phase 9** – Persist results in PostgreSQL
-- [ ] **Phase 10** – Manual offset commits
-- [ ] **Phase 11** – Idempotency
-- [ ] **Phase 12** – Retry handling
-- [ ] **Phase 13** – Dead Letter Queue
-- [ ] **Phase 14** – Multiple consumers / consumer groups
-- [ ] **Phase 15** – Consumer failure & rebalancing
-- [ ] **Phase 16** – Structured logging & metrics
-- [ ] **Phase 17** – Performance testing
-- [ ] **Phase 18** – Final cleanup & documentation
+- [x] **Phase 2** – Start Kafka & PostgreSQL, verify connectivity
+- [x] **Phase 3** – Create and inspect Kafka topics manually
+- [x] **Phase 4** – Build a simple Kafka producer
+- [x] **Phase 5** – Build a simple Kafka consumer
+- [x] **Phase 6** – Understand partitions and offsets
+- [x] **Phase 7** – Integrate Laravel API with Kafka producer
+- [x] **Phase 8** – Build the email-validation consumer
+- [x] **Phase 9** – Persist results in PostgreSQL
+- [x] **Phase 10** – Manual offset commits
+- [x] **Phase 11** – Idempotency
+- [x] **Phase 12** – Retry handling
+- [x] **Phase 13** – Dead Letter Queue
+- [x] **Phase 14** – Multiple consumers / consumer groups
+- [x] **Phase 15** – Consumer failure & rebalancing
+- [x] **Phase 16** – Structured logging & metrics
+- [x] **Phase 17** – Performance testing
+- [x] **Phase 18** – Final cleanup & documentation
 
 ## Architecture
 
