@@ -8,7 +8,7 @@ use RdKafka\Conf;
 use RdKafka\Producer;
 use RuntimeException;
 
-final class KafkaProducerService
+class KafkaProducerService
 {
     private Producer $producer;
     private string $topic;
